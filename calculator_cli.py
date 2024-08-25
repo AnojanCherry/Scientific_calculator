@@ -25,10 +25,8 @@ class calculator_cli:
         """
 
         while True:
-            # print("Here")
-            print(eqr)
             try:
-                int(eqr)
+                float(eqr)
                 return(eqr)
             except:
                 eqr = self.brackets(eqr)
@@ -45,7 +43,6 @@ class calculator_cli:
         """
 
         if "(" in eqr:
-            # tmp = []
             count = 0
             ind_s = 0
             ind_e = 0
@@ -57,38 +54,13 @@ class calculator_cli:
                     if (ind_e<=ind_s):
                         ind_e = ind 
                     count -= 1
-                # print(f"{ind}. {eq_i}")
-            # for i in eqr:
-            #     if "(" in i:
-            #         tmp.append(eq_splt)
-            #         eq_splt = ""
-            #         count += 1
-            #     elif ")" in i:
-            #         tmp.append(eq_splt)
-            #         eq_splt = ""
-            #         count -= 1
-            #     else:
-            #         eq_splt += i
-            # print(tmp)
-            # if tmp[0] == "":
-            #     del tmp[0]
-            # if tmp[-1] == "":
-            #     del tmp[-1]
-            # input(tmp)
-            # input(count)
             if count <0:
                 raise Exception("More ) than (")
             elif count>0:
                 raise Exception("More ( than )")
-            # else:
-            #     input(tmp)
             eqr_s = eqr[:ind_s]
             eqr_splt = eqr[ind_s+1:ind_e]
             eqr_e = eqr[ind_e+1:]
-            # print(eqr_s)
-            # print(eqr_splt)
-            # input(eqr_e)
-            # input(f"Calc: {eqr_splt}")
             eqr_splt = self.calculate(eqr_splt)
             if eqr_s == "":
                 if eqr_e == "":
@@ -120,8 +92,39 @@ class calculator_cli:
                     eqr_return+=eqr_e
                 return eqr_return
         else:
-            # print("Here")
             return self.indices(eqr)
+    
+    def splitter_symb_2_eqr(self, symb:str, eqr:str):
+        if symb in eqr:
+            ind = eqr.index(symb)
+            i=1
+            try:
+                while ind-i>=0:
+                    if eqr[ind-i]!=".":
+                        int(eqr[ind-i])
+                    i+=1
+                ind_s = 0
+                eqr_s = ""
+            except:
+                ind_s = ind-i+1
+                eqr_s = eqr[:ind_s]  
+            
+            i=ind+len(symb)   
+            try:
+                while i<=len(eqr):
+                    if eqr[i]!=".":
+                        int(eqr[i])
+                    i+=1
+                ind_e = -1
+                eqr_e = ""
+            except:
+                ind_e = i
+                eqr_e = eqr[ind_e:]
+            
+            eqr_splt = eqr[ind_s:ind_e]
+            return True, eqr_s, eqr_splt, eqr_e
+        else:
+            return False, None, None, None
     
     def indices(self, eqr:str)->str:
         """
@@ -133,43 +136,12 @@ class calculator_cli:
         Returns:
             str: returns after substituting string
         """
+        
         if "**" in eqr:
-            indice_char = ["**"]
-            ind = eqr.index("**")
-            i=1
-            try:
-                while ind-i>=0:
-                    # input(eqr[ind-i])
-                    int(eqr[ind-i])
-                    i+=1
-                ind_s=0
-                eqr_s=""
-            except:
-                ind_s = ind-i+1
-                eqr_s = eqr[:ind_s]
-            print(eqr_s)
-            i=ind+2
-            try:
-                while i<=len(eqr):
-                    # input(eqr[i])
-                    int(eqr[i])
-                    i+=1
-                ind_e=-1
-                eqr_e=""
-            except:
-                ind_e = i
-            eqr_e = eqr[ind_e:]
-            # input(f"{eqr_s}\t{eqr_e}")
-            # input(f"{eqr[ind_s:ind_e]}")
-            eqr_splt = eqr[ind_s:ind_e]
-            base,powe = eqr_splt.split("**")
-            # input(f"{base}\t{powe}")
-            eqr_splt = pow(int(base), int(powe))
+            _,eqr_s,eqr_splt,eqr_e = self.splitter_symb_2_eqr("**", eqr)
+            base, pwe = eqr_splt.split("**")
+            eqr_splt = pow(float(base), float(pwe))
             return eqr_s+str(eqr_splt)+eqr_e
-            # if ind_s==0:
-            #     if ind_e==0:
-            #         print(eqr)
-            # input()
         else:
             return self.division(eqr)
     
@@ -183,6 +155,13 @@ class calculator_cli:
         Returns:
             str: returns after substituting string
         """
+        if "/" in eqr:
+            _,eqr_s,eqr_splt,eqr_e = self.splitter_symb_2_eqr("/",eqr)
+            n_ator,d_ator = eqr_splt.split("/")
+            eqr_splt = float(n_ator)/float(d_ator)
+            return eqr_s+str(eqr_splt)+eqr_e
+        else:
+            return self.multiplication(eqr)
 
     def multiplication(self, eqr:str)->str:
         """
@@ -194,6 +173,13 @@ class calculator_cli:
         Returns:
             str: returns after substituting string
         """
+        if "*" in eqr:
+            _,eqr_s,eqr_splt,eqr_e = self.splitter_symb_2_eqr("*",eqr)
+            var_a,var_b = eqr_splt.split("*")
+            eqr_splt = float(var_a)*float(var_b)
+            return eqr_s+str(eqr_splt)+eqr_e
+        else:
+            return self.addition(eqr)
 
     def addition(self, eqr:str)->str:
         """
@@ -205,6 +191,13 @@ class calculator_cli:
         Returns:
             str: returns after substituting string
         """
+        if "+" in eqr:
+            _,eqr_s,eqr_splt,eqr_e = self.splitter_symb_2_eqr("+",eqr)
+            var_a,var_b = eqr_splt.split("+")
+            eqr_splt = float(var_a)+float(var_b)
+            return eqr_s+str(eqr_splt)+eqr_e
+        else:
+            return self.subract(eqr)
     
     def subract(self, eqr:str)->str:
         """
@@ -216,3 +209,9 @@ class calculator_cli:
         Returns:
             str: returns after substituting string
         """
+        if "-" in eqr:
+            _,eqr_s,eqr_splt,eqr_e = self.splitter_symb_2_eqr("-",eqr)
+            var_a,var_b = eqr_splt.split("-")
+            eqr_splt = float(var_a)-float(var_b)
+            return eqr_s+str(eqr_splt)+eqr_e
+        return eqr
