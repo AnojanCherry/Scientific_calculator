@@ -24,6 +24,7 @@ if __name__ == "__main__":
         tbdl=tbdl.replace("/","")
         tbdl=tbdl.replace("+","")
         tbdl=tbdl.replace("-","")
+        tbdl=tbdl.replace(".","")
         print(len(tbdl))
         # if chr(i) in args.equation:
         #         error_msg = f"Can't solve for \"{chr(i)}\""
