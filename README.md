@@ -63,7 +63,7 @@ If you have any feedback, please reach out to us at anojancherryaji@gmail.com
 - danmadeira (2024).  _GitHub - danmadeira/simple-icon-badges: All free SVG icons from Simple Icons to Shields.io badges._  [online] GitHub. Available at: https://github.com/danmadeira/simple-icon-badges [Accessed 25 Aug. 2024].
 
 
-# KaTeX
+## Ignore the following
 
 You can render LaTeX mathematical expressions using [KaTeX](https://khan.github.io/KaTeX/):
 
