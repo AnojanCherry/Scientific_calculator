@@ -64,7 +64,7 @@ python  .\runMe_cli.py  -eq  "(3(.1))**2+2(5)"
 
 5. A Terminal counter part for python cli
 
-## 🔗 Links
+## Links
 
 [NVARDA](http://nvarda.com/)
 
