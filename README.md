@@ -6,7 +6,8 @@ A multi-language calculator app. The objective is to create an app using as many
 
 ## Table of contents
 1. [Installation](#installation)
-    1. [Download](#download)
+    1. [Requirements](#requirements)
+    2. [Download](#download)
 2. [Key terms](#key-terms)
 3. [Examples](#examples)
     1. [Python](#python)
@@ -18,6 +19,7 @@ A multi-language calculator app. The objective is to create an app using as many
 8. [References](#references)
 
 ## Installation
+### Requirements
 
 ### Download
 
