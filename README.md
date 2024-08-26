@@ -33,21 +33,13 @@ git  clone  https://github.com/AnojanCherry/Scientific_calculator.git
 ## Key terms
 
 |Key|Usage|
-
 |--|--|
-
 |()|Bracket|
-
 |**|Indices|
-
 |/|Division|
-
 |*|Multiplication|
-
 |+|Addition|
-
 |-|Subraction|
-
   
 
 ## Examples
