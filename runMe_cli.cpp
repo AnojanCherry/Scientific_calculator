@@ -26,6 +26,7 @@ int main(int argc, char* argv[]){
             if (args_a=="--equation" || args_a=="-eq"){
                 scientific_calculator.setEquations(argv[i]);
                 std::string value = scientific_calculator.calculate(scientific_calculator.getEquations());
+                std::cout<<"Calculated value: "<<scientific_calculator.getEquations();
             }
             args_a = argv[i];
         }
