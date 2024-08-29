@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
             // std::cout << "Loop " << i << ". " << args_a << " ~ " << argv[i] << std::endl;
             if (args_a=="--equation" || args_a=="-eq"){
                 scientific_calculator.setEquations(argv[i]);
-                scientific_calculator.calculate();
+                std::string value = scientific_calculator.calculate(scientific_calculator.getEquations());
             }
             args_a = argv[i];
         }

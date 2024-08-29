@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <cmath>
 
 class calculator_cli{
     public:
@@ -13,7 +14,7 @@ class calculator_cli{
         bool validateChar(std::string,char);
         bool validateChar(std::string, std::string);
         // bool isInt(int &temp);
-        void calculate();
+        std::string calculate(std::string);
         std::string brackets(std::string);
         std::string indices(std::string);
         std::string division(std::string);
@@ -161,16 +162,22 @@ bool calculator_cli::validateChar(std::string value, std::string c){
     return false;
 }
 
-void calculator_cli::calculate(){
-    if(validateEquation(eqr)){
-        std::cout<<"Not an Equation: "<<eqr<<std::endl;
+std::string calculator_cli::calculate(std::string value){
+    if(validateEquation(value)){
+        std::cout<<"Not an Equation: "<<value<<std::endl;
     } else{
-        while(!isFloat(eqr)){
-            eqr = brackets(eqr);
-            // std::cout<<"Its an Equation: "<<eqr<<std::endl;
+        // int ind = 1;
+        while(!isFloat(value)){
+            value = brackets(value);
+            // std::cout<<ind<<". Simplified: "<<value<<"\n"<<std::endl;
+            // ind++;
+            // if (ind > 1){
+            //     break;
+            // }
         }
-        std::cout<<"Calculated value: "<<eqr<<std::endl;
-    }   
+        std::cout<<"Calculated value: "<<value<<std::endl;
+    }
+    return value;
 }
 
 std::string calculator_cli::brackets(std::string value){
@@ -203,52 +210,118 @@ std::string calculator_cli::brackets(std::string value){
         // std::cout<<"Over here"<<std::endl;
 
         // std::cout<<"Original: "<<value<<std::endl;
-        // std::cout<<val_1<<" ~ "<<val_2<<" ~ "<<val_3<<"\n"<<std::endl;
+        std::cout<<"[Bracket] "<<value<<" > "<<val_1<<" ~ "<<val_2<<" ~ "<<val_3<<std::endl;
         // std::cout<<"Its a bracket"<<std::endl;
 
-        val_2 = division(val_2);
-        
+        val_2 = calculate(val_2);
+        std::cout<<"[Bracket] "<<value<<" > "<<val_1<<" ~ "<<val_2<<" ~ "<<val_3<<std::endl;
+        // std::cout<<std::isdigit(val_1[val_1.size()-1])<<std::endl;
+        // std::cout<<(val_1[val_1.size()-1])<<std::endl;
+        if (std::isdigit(val_1[val_1.size()-1])){
+            value = val_1+"*"+val_2;
+        } else{
+            value = val_1+val_2;
+        }
+
+        if (std::isdigit(val_3[0])){
+            value += "*"+val_3;
+        } else{
+            value += val_3;
+        }
+        std::cout<<"[Bracket] "<<value<<std::endl;
+        return value;
     } else{
-        value = indices(value);
+        return indices(value);
         // std::cout<<"Its not a bracket"<<std::endl;
     }
-    return value;
 }
 
 std::string calculator_cli::indices(std::string value){
     if(validateChar(value,"**")){
-        return "22";
+        int idx = 0;
+        bool lp=true, trig = true;
+        std::string val_1="", bse="", pwe="", val_3="";
+        // while(idx<value.size()-1){
+        while (lp){
+            std::string c_i = value.substr(idx,2);
+            // std::cout<<"[Indices] "<<idx<<". "<<c_i<<" ~ "<<(c_i=="**")<<std::endl;
+            if (c_i == "**"){
+                lp=false;
+            }
+            // bool bl = c_i == "**";
+            // // std::cout<<idx<<". "<<c_i<<"   "<<bl<<std::endl;
+            // if(bl){
+            //     return true;
+            // }
+            ++idx;
+        }
+
+        int i = idx-2;
+        // lp = true;
+        std::cout<<"[Indices] "<<value<<std::endl;
+        while(!(i<0)){
+            char c = value[i];
+            if (!(std::isdigit(c) || c == '.')){
+                trig = false;
+            }
+            if(trig){
+                bse = c+bse;
+            } else{
+                val_1 = c+val_1;
+            }
+            // std::cout<<"[Indices] "<<c<<std::endl;
+            // std::cout<<"[Indices] "<<val_1<<" ~ "<<bse<<"^"<<pwe<<val_3<<std::endl;
+            i--;
+        }
+
+        i = idx+1;
+        trig = true;
+        while (i<value.size()){
+            char c = value[i];
+            if(!(std::isdigit(c)||c=='.')){
+                trig=false;
+            }
+            if(trig){
+                pwe += c;
+            } else{
+                val_3 += c;
+            }
+            // std::cout<<"[Indices] "<<c<<std::endl;
+            // std::cout<<"[Indices] "<<val_1<<" ~ "<<bse<<"^"<<pwe<<" ~ "<<val_3<<std::endl;
+            i++;
+        }
+
+        std::cout<<"[Indices] "<<val_1<<" ~ "<<bse<<"^"<<pwe<<val_3<<std::endl;
+        std::string val_2 = calculate(std::to_string(std::pow(std::stof(bse),std::stof(pwe))));
+
+        return val_1+val_2+val_3;
     } else{
-        value = division(value);
+        return division(value);
     }
-    return value;
 }
 
 std::string calculator_cli::division(std::string value){
     if(validateChar(value,'/')){
         return "24";
     } else{
-        value = multiplication(value);
+        return multiplication(value);
     }
-    return value;
 }
 
 std::string calculator_cli::multiplication(std::string value){
     if(validateChar(value,'*')){
         return "24";
     } else{
-        value = addition(value);
+        return addition(value);
     }
-    return value;
 }
 
 std::string calculator_cli::addition(std::string value){
     if(validateChar(value,'+')){
         return "28";
     } else{
-        value = subraction(value);
+        return subraction(value);
     }
-    return value;
 }
 
 std::string calculator_cli::subraction(std::string value){
